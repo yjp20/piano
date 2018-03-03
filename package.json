@@ -1,0 +1,16 @@
+{
+  "name": "piano",
+  "version": "1.0.0",
+  "description": "Piano is a HTML5 piano that looks and plays beautifully. Based off of the assets created for the creation of Picem. ",
+  "main": "index.js",
+  "scripts": {
+    "run": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Youngjin Park, David Suh",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}

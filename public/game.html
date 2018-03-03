@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111601420-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-111601420-2');
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="css/range.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <script src="js/lib/Tone.min.js"></script>
+    <script src='js/piano.js'></script>
+    <script src='js/keymapping.js'></script>
+    <script src='js/keyfunctions.js'></script>
+  </head>
+  <body>
+    <div id="keyboard_up" class="keyboard">
+      <div class="white-keys">
+        <button class="white-key" id="C2">C2</button>
+        <button class="white-key" id="D2"></button>
+        <button class="white-key" id="E2"></button>
+        <button class="white-key" id="F2"></button>
+        <button class="white-key" id="G2"></button>
+        <button class="white-key" id="A2"></button>
+        <button class="white-key" id="B2"></button>
+        <button class="white-key" id="C3">C3</button>
+        <button class="white-key" id="D3"></button>
+        <button class="white-key" id="E3"></button>
+        <button class="white-key" id="F3"></button>
+        <button class="white-key" id="G3"></button>
+        <button class="white-key" id="A3"></button>
+        <button class="white-key" id="B3"></button>
+        <button class="white-key" id="C4">C4</button>
+        <button class="white-key" id="D4"></button>
+        <button class="white-key" id="E4"></button>
+        <button class="white-key" id="F4"></button>
+        <button class="white-key" id="G4"></button>
+        <button class="white-key" id="A4"></button>
+        <button class="white-key" id="B4"></button>
+      </div>
+      <div class="black-keys">
+        <button class="black-key" id="C#2"></button>
+        <button class="black-key" id="D#2"></button>
+        <span id="empty2_1" class="empty"></span>
+        <button class="black-key" id="F#2"></button>
+        <button class="black-key" id="G#2"></button>
+        <button class="black-key" id="A#2"></button>
+        <span id="empty2_2" class="empty"></span>
+        <button class="black-key" id="C#3"></button>
+        <button class="black-key" id="D#3"></button>
+        <span id="empty3_1" class="empty"></span>
+        <button class="black-key" id="F#3"></button>
+        <button class="black-key" id="G#3"></button>
+        <button class="black-key" id="A#3"></button>
+        <span id="empty3_2" class="empty"></span>
+        <button class="black-key" id="C#4"></button>
+        <button class="black-key" id="D#4"></button>
+        <span id="empty4_1" class="empty"></span>
+        <button class="black-key" id="F#4"></button>
+        <button class="black-key" id="G#4"></button>
+        <button class="black-key" id="A#4"></button>
+        <span id="empty4_2" class="empty"></span>
+      </div>
+    </div>
+    <div id="keyboard_down" class="keyboard">
+      <div class="white-keys">
+        <button class="white-key" id="C5">C5</button>
+        <button class="white-key" id="D5"></button>
+        <button class="white-key" id="E5"></button>
+        <button class="white-key" id="F5"></button>
+        <button class="white-key" id="G5"></button>
+        <button class="white-key" id="A5"></button>
+        <button class="white-key" id="B5"></button>
+        <button class="white-key" id="C6">C6</button>
+        <button class="white-key" id="D6"></button>
+        <button class="white-key" id="E6"></button>
+        <button class="white-key" id="F6"></button>
+        <button class="white-key" id="G6"></button>
+        <button class="white-key" id="A6"></button>
+        <button class="white-key" id="B6"></button>
+        <button class="white-key" id="C7">C7</button>
+        <button class="white-key" id="D7"></button>
+        <button class="white-key" id="E7"></button>
+        <button class="white-key" id="F7"></button>
+        <button class="white-key" id="G7"></button>
+        <button class="white-key" id="A7"></button>
+        <button class="white-key" id="B7"></button>
+      </div>
+      <div class="black-keys">
+        <button class="black-key" id="C#5"></button>
+        <button class="black-key" id="D#5"></button>
+        <span id="empty5_1" class="empty"></span>
+        <button class="black-key" id="F#5"></button>
+        <button class="black-key" id="G#5"></button>
+        <button class="black-key" id="A#5"></button>
+        <span id="empty5_2" class="empty"></span>
+        <button class="black-key" id="C#6"></button>
+        <button class="black-key" id="D#6"></button>
+        <span id="empty6_1" class="empty"></span>
+        <button class="black-key" id="F#6"></button>
+        <button class="black-key" id="G#6"></button>
+        <button class="black-key" id="A#6"></button>
+        <span id="empty6_2" class="empty"></span>
+        <button class="black-key" id="C#7"></button>
+        <button class="black-key" id="D#7"></button>
+        <span id="empty7_1" class="empty"></span>
+        <button class="black-key" id="F#7"></button>
+        <button class="black-key" id="G#7"></button>
+        <button class="black-key" id="A#7"></button>
+        <span id="empty7_2" class="empty"></span>
+      </div>
+    </div>
+    <div id="controls">
+      <div id="pedals">
+        <button class="pedal" id="pedal_1"></button>
+        <button class="pedal" id="pedal_2"></button>
+        <button class="pedal" id="pedal_3"></button>
+      </div>
+      <div id="other">
+        <select id="layoutSelect">
+          <option>Compact</option>
+          <option>Basic</option>
+          <option selected>Functional</option>
+        </select>
+        <label class="toggle" id="toggleLayoutView">
+          <input id="toggleLayoutViewInput" type="checkbox"></input>
+          <div class="slide"></div>
+          <div class="slider"></div>
+        </label>
+        <input type="range" min="-30" max="30" id="volumeSlider"></input>
+        <select id="chooseInstrument">
+          <option selected>Piano</option>
+          <option>Guitar</option>
+          <option>Violin</option>
+        </select>
+      </div>
+    </div>
+    <script src="js/keyboard.js"></script>
+  </body>
+
+</html>
