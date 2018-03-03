@@ -1,4 +1,4 @@
-class PianoKeyboard {
+module.exports = class PianoKeyboard {
   constructor() {
     this.pianoKeys = {};
     this.notesListing = new NotesListing();
