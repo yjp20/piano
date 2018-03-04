@@ -1,13 +1,11 @@
 module.exports = class PianoKeyboard {
   constructor() {
     this.pianoKeys = {};
-    this.notesListing = new NotesListing();
-    _generatePianoKeys();
+    this.notesListing = NotesListing.generateNotesListing();
+    this.pianoKeys = _generatePianoKeys(this.notesListing);
   };
-
   function _generatePianoKeys() {
-    for(let i = 0; i<notesListing.length; i++){
-      pianoKeys[notesListing[i]] = new PianoKey(notesListing[i]);
-    }
+    for(let i = 0; i<this.notesListing.length; i++)
+      pianoKeys[this.notesListing[i]] = new PianoKey(this.notesListing[i]);
   };
 }
