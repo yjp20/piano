@@ -1,5 +1,3 @@
-const NotesListing = require('../public/js/models/NotesListing.js');
-
 describe('Notes List', function() {
   it('returns notes list', function() {
     let expected = [
