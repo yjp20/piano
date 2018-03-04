@@ -1,4 +1,4 @@
-module.exports = class NotesListing {
+class NotesListing {
   static generateNotesListing() {
     this._createNotesListing();
     this._fillNotesListing();
