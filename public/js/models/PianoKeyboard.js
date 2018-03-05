@@ -4,9 +4,9 @@ class PianoKeyboard {
     this.notesListing = NotesListing.generateNotesListing();
     this.pianoKeys = _generatePianoKeys(this.notesListing);
 
-    this.UnaCordePedal = new UnaCordePedal();
-    this.SostenutoPedal = new SostenutoPedal();
-    this.SoftPedal = new SoftPedal();
+    this.UnaCordePedal = new UnaCordePedal(this.pianoKeys);
+    this.SostenutoPedal = new SostenutoPedal(this.pianoKeys);
+    this.SoftPedal = new SoftPedal(this.pianoKeys);
   };
 
   function _generatePianoKeys() {

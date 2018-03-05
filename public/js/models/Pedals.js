@@ -1,18 +1,10 @@
 class Pedals {
-  constructor(parentNode) {
+  constructor(parentNode, pianoKeys) {
     this.parentNode = parentNode;
-    _createDOMElement();
-    _modiftDOMElement();
-    _appendDOMElemment();
-  }
+    this.pianoKeys = pianoKeys;
 
-  _createDOMElement() {
-    this.DOMelement = document.createElement('button')
-  }
-  _modifyDOMElement() {
-    this.DOMelement.setAttribute('class', 'pedal')
-  }
-  _appendDOMElement() {
-    this.parentNode.appendChild(this.DOMelement);
+    this.DOMbutton = new Button({
+      'class': 'pedal'
+    }, this.parentNode);
   }
 }

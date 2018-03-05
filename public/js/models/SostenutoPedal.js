@@ -1,0 +1,3 @@
+class SostenutoPedal extends Pedals {
+  
+}
