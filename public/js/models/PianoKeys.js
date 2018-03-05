@@ -1,16 +1,17 @@
 class PianoKey extends Button {
-  constructor(note, grandfatherNode) {
+  constructor(grandfatherNode, note) {
     this.note = note;
     this.typeOfKey = this._setTypeByNote();
     this.gradnfatherNode = grandfatherNode;
     this.parentNode = this._getParentNode();
-    this.button = this._createDOMButton();
+    this.DOMbutton = this._createDOMButton();
 
     // damper mimics the structure of a
     // real piano. TRUE = down/silence, FALSE = up/allowsound
     this.damper = true;
+    this.damperLockSustain = false;
     this.damperLockSostenuto = false;
-    this.damperLockUnaCorde = false;
+    this.softUnaCorde = false;
   }
 
 
@@ -32,25 +33,25 @@ class PianoKey extends Button {
       'id': this.note
     }, this.parentNode)
     tempDOMButton.activate = function () {
-      play();
-    }
+      this.play();
+    }.bind(this);
     tempDOMButton.deactivate = function () {
-      stop();
-    }
+      this.stop();
+    }.bind(this);
   }
 
 
   play() {
     this.damper = false;
-    this._update();
+    this.update();
   }
-  stop() {
-    if (!this.damperLockUnaCorde && !this.damperLockSostenuto && !this.keyboardDown && !this.mouseDown) {
+  stopWhenConditions() {
+    if (!this.damperLockSustain && !this.damperLockSostenuto && !this.keyboardDown && !this.mouseDown) {
       this.damper = true;
-      this._update();
+      this.update();
     }
   }
-  _update() {
+  update() {
     if (this.damper) {
       // TODO stop sound in tone js
     } else {
