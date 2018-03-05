@@ -1,3 +1,0 @@
-var NotesListing = require('./NotesListing.js');
-
-console.log(JSON.stringify(NotesListing.generateNotesListing()));
