@@ -11,6 +11,7 @@
   "author": "Youngjin Park, David Suh",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "uglify-es": "^3.3.9"
   }
 }

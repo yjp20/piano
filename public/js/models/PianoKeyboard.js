@@ -1,5 +1,6 @@
 class PianoKeyboard {
-  constructor() {
+  constructor(DOMnode) {
+    this.DOMnode = DOMnode;
     this.pianoKeys = {};
     this.notesListing = NotesListing.generateNotesListing();
     this.pianoKeys = _generatePianoKeys();

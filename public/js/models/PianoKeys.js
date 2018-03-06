@@ -23,7 +23,7 @@ class PianoKey extends Button {
     return this.note.indexOf('#') != -1
   }
   _getParentNode() {
-    return this.gradnfatherNode.getElementById(this.type + 's');
+    return this.grandfatherNode.getElementById(this.type + 's');
   }
 
 
@@ -59,6 +59,6 @@ class PianoKey extends Button {
     }
   }
   isPlaying() {
-    return !damper;
+    return !this.damper;
   }
 }
