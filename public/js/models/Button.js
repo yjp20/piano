@@ -14,7 +14,7 @@ class Button {
     this._addMouseListener();
     this._appendDOMElement();
   }
-  setDOMAttributes(attributes = {}) {
+  setDOMAttributes(attributes) {
     for (attribute in attributes) {
       this.DOMelement.setAttribute(attribute, attributes[attribute]);
     }

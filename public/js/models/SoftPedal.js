@@ -1,5 +1,8 @@
 class UnaCordePedal extends Pedals {
-  this.type = 'unacorde';
+  constructor() {
+    super();
+    this.type = 'unacorde';
+  }
 
   activate() {
     for (pianoKey in this.pianoKeys) {
