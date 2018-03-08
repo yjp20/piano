@@ -4,7 +4,7 @@
   "description": "Piano is a HTML5 piano that looks and plays beautifully. Based off of the assets created for the creation of Picem. ",
   "main": "index.js",
   "scripts": {
-    "run": "node index.js",
+    "run": "npx babel public/js --out-file public/compiled.js && node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
