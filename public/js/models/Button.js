@@ -9,8 +9,11 @@ class Button {
     this.keyboardDown = false;
     this.mouseDown = false;
   }
+  get isStateOn() {
+    return this.keyboardDown || this.mouseDown;
+  }
   _createDOMelement() {
-    return document.createElement('button');
+    return document.createElement('div');
   }
   _modifyDOMElement() {
     this._addMouseListener();
@@ -45,28 +48,29 @@ class Button {
     }.bind(this))
   }
   _mouseDown() {
-
-    console.log('hello')
     this.mouseDown = true;
-    this.activate();
+    this._parentActivate();
   }
   _mouseUp() {
-    console.log('hello')
     this.mouseDown = false;
-    this.deactivate();
+    this._parentDeactivate();
   }
   keyboardDown() {
     this.keyboardDown = true;
-    this.activate();
+    this._parentActivate();
   }
   keyboardUp() {
     this.keyboardDown = false;
-    this.deactivate();
+    this._parentDeactivate();
   }
-  activate() {
-
+  _parentActivate() {
+    this.DOMelement.setAttribute('pressed', '');
+    this.activate();
   }
-  deactivate() {
-
+  _parentDeactivate() {
+    if (!(this.keyboardDown || this.mouseDown)) {
+      this.DOMelement.removeAttribute('pressed');
+      this.deactivate()
+    }
   }
 }
