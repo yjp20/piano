@@ -1,5 +1,8 @@
 class SostenutoPedal extends Pedals {
-  this.type = 'sostenuto';
+  constructor() {
+    super();
+    this.type = 'sostenuto';
+  }
   
   activate() {
     for (pianoKey in this.pianoKeys) {

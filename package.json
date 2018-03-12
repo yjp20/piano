@@ -4,15 +4,25 @@
   "description": "Piano is a HTML5 piano that looks and plays beautifully. Based off of the assets created for the creation of Picem. ",
   "main": "index.js",
   "scripts": {
-    "run": "node index.js",
+    "run": "npx babel public/js --out-file public/compiled.js && node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Youngjin Park, David Suh",
   "license": "MIT",
   "dependencies": {
+<<<<<<< HEAD
     "express": "^4.16.2",
     "nodemon": "^1.17.1",
     "uglify-es": "^3.3.9"
+=======
+    "babel-cli": "^6.26.0",
+    "babel-minify": "^0.3.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-minify": "^0.3.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "express": "^4.16.2"
+>>>>>>> dc9e0989ebb45581ab45d5ec0dd0b72f8b9dd75c
   }
 }

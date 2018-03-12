@@ -1,8 +1,8 @@
-class PianoKey extends Button {
+class PianoKey {
   constructor(grandfatherNode, note) {
     this.note = note;
     this.typeOfKey = this._setTypeByNote();
-    this.gradnfatherNode = grandfatherNode;
+    this.grandfatherNode = grandfatherNode;
     this.parentNode = this._getParentNode();
     this.DOMbutton = this._createDOMButton();
 
@@ -23,7 +23,7 @@ class PianoKey extends Button {
     return this.note.indexOf('#') != -1
   }
   _getParentNode() {
-    return this.grandfatherNode.getElementById(this.type + 's');
+    return document.getElementById(this.type + 's');
   }
 
 
@@ -50,7 +50,7 @@ class PianoKey extends Button {
       this.damper = true;
       this.update();
     }
-  }
+    }
   update() {
     if (this.damper) {
       // TODO stop sound in tone js

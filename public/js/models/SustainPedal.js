@@ -1,5 +1,8 @@
 class SustainPedal extends Pedals {
-  this.type = 'sustain';
+  constructor() {
+    super();
+    this.type = 'sustain';
+  }
 
   activate() {
     for (pianoKey in this.pianoKeys) {
