@@ -1,7 +1,9 @@
 class Button {
   constructor(attributes, parentNode) {
-    this.setDOMAttributes(attributes);
     this.parentNode = parentNode;
+    this.DOMelement = this._createDOMelement();
+    this.setDOMAttributes(attributes);
+    this._modifyDOMElement();
 
     // multiple inputs, mouse, keyboard
     this.keyboardDown = false;
@@ -15,7 +17,7 @@ class Button {
     this._appendDOMElement();
   }
   setDOMAttributes(attributes) {
-    for (attribute in attributes) {
+    for (let attribute in attributes) {
       this.DOMelement.setAttribute(attribute, attributes[attribute]);
     }
   }
@@ -23,30 +25,33 @@ class Button {
     this.parentNode.appendChild(this.DOMelement);
   }
   _addMouseListener() {
-    this.DOMelement.addEventListener('onmousedown', function () {
-      this.mouseDown();
+    this.DOMelement.addEventListener('mousedown', function () {
+      this._mouseDown();
     }.bind(this))
-    this.DOMelement.addEventListener('onmouseup', function () {
-      this.mouseUp();
+    this.DOMelement.addEventListener('mouseup', function () {
+      this._mouseUp();
     }.bind(this))
-    this.DOMelement.addEventListener('onmouseenter', function (event) {
+    this.DOMelement.addEventListener('mouseenter', function (event) {
       const CLICKED = 1;
-      if (event.button == CLICKED) {
-        this.mouseDown();
+      if (event.buttons == CLICKED) {
+        this._mouseDown();
       }
     }.bind(this))
-    this.DOMelement.addEventListener('onmouseup', function (event) {
+    this.DOMelement.addEventListener('mouseleave', function (event) {
       const CLICKED = 1;
-      if (event.button == CLICKED) {
-        this.mouseUp();
+      if (event.buttons == CLICKED) {
+        this._mouseUp();
       }
     }.bind(this))
   }
   _mouseDown() {
+
+    console.log('hello')
     this.mouseDown = true;
     this.activate();
   }
   _mouseUp() {
+    console.log('hello')
     this.mouseDown = false;
     this.deactivate();
   }
