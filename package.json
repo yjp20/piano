@@ -1,7 +1,7 @@
 {
   "name": "piano",
   "version": "1.0.0",
-  "description": "Piano is a HTML5 piano that looks and plays beautifully. Based off of the assets created for the creation of Picem. ",
+  "description": "Piano is a HTML5 piano that looks and plays beautifully.",
   "main": "index.js",
   "scripts": {
     "run": "npx babel public/js --out-file public/compiled.js && node index.js",
