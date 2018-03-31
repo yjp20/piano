@@ -1,4 +1,4 @@
-# ![image](./logo.png = 100X)  piano 
+# ![image](./logo.png =100x)  piano 
 
 a html5 piano app created for the web prioritizing simplicty and ease of use
 
