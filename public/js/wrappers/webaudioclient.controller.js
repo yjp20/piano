@@ -24,7 +24,10 @@ class Controller{
   load() {
     this._BUFFER_SOURCE = this.ref.context.createBufferSource();
     this._BUFFER_SOURCE.buffer = this.ref.bufferHandle;
-    this._BUFFER_SOURCE.connect(this.ref.context.destination)
+    this._BUFFER_SOURCE.gainNode = this.ref.context.createGain();
+    this._BUFFER_SOURCE.connect(this._BUFFER_SOURCE.gainNode);
+    this._BUFFER_SOURCE.gainNode.gain.value = 1;
+    this._BUFFER_SOURCE.gainNode.connect(this.ref.context.destination);
 
     if(!this._BUFFER_SOURCE.onended) this.initBufferSettings();
     //this._BUFFER_SOURCE.start();
