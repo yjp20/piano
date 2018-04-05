@@ -92,31 +92,29 @@ body{
 #controls {
   width: 800px;
   height:40px;
-  background-color: #444;
+  background-color: #f8f8f8;
+  border-top: 1px solid #e5e5e5;
+
   display:flex;
   justify-content: space-between;
 }
 
 #pedal-container {
   display: flex;
-  background-color: #333;
-  width: 130px;
-  height: 20px;
-  padding: 10px;
+  width: 80px;
+  height: 40px;
   align-items: center;
   justify-content: space-between;
 }
 
 .pedals {
-  border-radius: 10px;
-  margin-right:4px;
   border: none;
-  background-color: #888;
-  width: 34px;
-  height: 20px;
+  background-color: #ffc300;
+  width: 20px;
+  height: 40px;
 }
 .pedals[pressed] {
-  background-color: #ffc300;
+  background-color: #efb300;
 }
 
 #other-left,

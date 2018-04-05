@@ -1,37 +1,20 @@
 <!doctype html>
 <html>
   <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-
     <link rel="stylesheet" type="text/css" href="css/range.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="lib/Tone.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/game.css">
   </head>
   <body>
     <div id="keyboard">
-      <div id="white-keys">
-
-      </div>
-      <div id="black-keys">
-
-      </div>
+      <div id="white-keys"></div>
+      <div id="black-keys"></div>
     </div>
     <div id="controls">
-      <div id="other-left">
-      </div>
-      <div id="pedal-container">
-      </div>
-      <div id="other-right">
-      </div>
+      <div id="other-left"></div>
+      <div id="pedal-container"></div>
+      <div id="other-right"></div>
     </div>
-    <script src='js/models/PianoKeyboard.js'></script>
-    <script src='js/models/PianoKeys.js'></script>
-    <script src='js/models/Pedals.js'></script>
-    <script src='js/models/NotesListing.js'></script>
-    <script src='js/models/Button.js'></script>
-    <script src='js/models/SoftPedal.js'></script>
-    <script src='js/models/SostenutoPedal.js'></script>
-    <script src='js/models/SustainPedal.js'></script>
+    <script src='compiled.js'></script>
     <script>
       var keyboard = new PianoKeyboard(document.getElementById('keyboard'));
     </script>
