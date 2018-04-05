@@ -1,5 +1,4 @@
-/*
-var keymappingPresets = {
+var keymapping = {
   basic : {
     112: 'C2',
     113: 'C#2',
@@ -68,8 +67,8 @@ var keymappingPresets = {
     37: 'pedal_1',
     40: 'pedal_2',
     39: 'pedal_3'
-
   },
+
   compact : {
     112: 'C2',
     113: 'C#2',
@@ -148,7 +147,6 @@ var keymappingPresets = {
   },
 
   functional : {
-
     9: 'C3',
     49: 'C#3',
     81: 'D3',
@@ -200,7 +198,14 @@ var keymappingPresets = {
   }
 }
 
-var keycodeToText = {
+function keyCodeToText(keyCode) {
+  let value = specialCases[keyCode];
+  if (value == undefined)
+    value = String.fromCharCode(keyCode);
+  return value;
+}
+
+var specialCases = {
   37: '&larr;',
   39: '&rarr;',
   40: '&darr;',
@@ -239,4 +244,3 @@ var keycodeToText = {
   93: 'SEL',
   38: '&uarr;'
 }
-*/

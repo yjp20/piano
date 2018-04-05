@@ -4,8 +4,8 @@
   "description": "Piano is a HTML5 piano that looks and plays beautifully.",
   "main": "index.js",
   "scripts": {
-    "build": "npx babel public/js/models --out-file public/compiled.js",
-    "start": "npx babel public/js --out-file public/compiled.js && node index.js",
+    "build": "npx babel public/js/models --out-file public/compiled.js --source-maps",
+    "start": "npx babel public/js --out-file public/compiled.js --source-maps && node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
