@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx babel public/js/models --out-file public/compiled.js",
-    "run": "npx babel public/js --out-file public/compiled.js && node index.js",
+    "start": "npx babel public/js --out-file public/compiled.js && node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
