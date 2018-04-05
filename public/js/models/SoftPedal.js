@@ -1,20 +1,18 @@
 class UnaCordePedal extends Pedals {
-  constructor() {
-    super();
+  _setType() {
     this.type = 'unacorde';
   }
-
   activate() {
     for (pianoKey in this.pianoKeys) {
-      if (pianoKey.isPlaying()) {
-        pianoKey.softUnaCorde = true;
+      if (this.pianoKeys[pianoKey].isPlaying()) {
+        this.pianoKeys[pianoKey].softUnaCorde = true;
       }
     }
   }
   deactivate() {
     for (pianoKey in this.pianoKeys) {
-      pianoKey.softUnaCorde = false;
-      pianoKey.stopWhenConditions();
+      this.pianoKeys[pianoKey].softUnaCorde = false;
+      this.pianoKeys[pianoKey].stopWhenConditions();
     }
   }
 }

@@ -1,21 +1,5 @@
 
-
-//intialize pedals, all turned OFF at beginning.
-//[0] = SOFT, [1] = PARTIAL SUSTAIN, [2] = FULL SUSTAIN
-var pedalState = [false, false, false];
-var psynth;
-var bsynth;
-//default values
-var defaultStates = {
-  volume: 0,
-  duration:0.5,
-  say: function() {
-    console.log(this.volume + ', ' + this.duration)
-  }
-};
-
-
-
+/*
 function setpsynthPiano() {
      psynth = new Tone.Sampler({
       'A0' : 'A0.[mp3|ogg]',
@@ -200,7 +184,4 @@ function setbsynthViolin() {
  }).toMaster();
 };
 setpsynthPiano();
-
-
-
-
+*/

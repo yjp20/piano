@@ -1,12 +1,12 @@
 class Pedals {
-  constructor(grandfatherNode, pianoKeys) {
-    this.grandfatherNode = grandfatherNode;
-    this.parentNode = _getParentNode();
+  constructor(pianoKeys) {
+    this._setType();
+    this.parentNode = this._getParentNode();
     this.pianoKeys = pianoKeys;
-    this.DOMbutton = this._createDOMButton();
+    this.DOMButton = this._createDOMButton();
   }
   _getParentNode() {
-    this.parentNode.getElementById('pedal-container');
+    return document.getElementById('pedal-container');
   }
   _createDOMButton() {
     let tempDOMButton = new Button({

@@ -1,20 +1,18 @@
 class SustainPedal extends Pedals {
-  constructor() {
-    super();
+  _setType() {
     this.type = 'sustain';
   }
-
   activate() {
     for (pianoKey in this.pianoKeys) {
-      if (pianoKey.isPlaying()) {
-        pianoKey.damperLockSustain = true;
+      if (this.pianoKeys[pianoKey].isPlaying()) {
+        this.pianoKeys[pianoKey].damperLockSustain = true;
       }
     }
   }
   deactivate() {
     for (pianoKey in this.pianoKeys) {
-      pianoKey.damperLockSustain = false;
-      pianoKey.stopWhenConditions();
+      this.pianoKeys[pianoKey].damperLockSustain = false;
+      this.pianoKeys[pianoKey].stopWhenConditions();
     }
   }
 }

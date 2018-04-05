@@ -1,20 +1,18 @@
 class SostenutoPedal extends Pedals {
-  constructor() {
-    super();
+  _setType() {
     this.type = 'sostenuto';
   }
-  
   activate() {
     for (pianoKey in this.pianoKeys) {
-      if (pianoKey.isPlaying()) {
-        pianoKey.damperLockSostenuto = true;
+      if (this.pianoKeys[pianoKey].isPlaying()) {
+        this.pianoKeys[pianoKey].damperLockSostenuto = true;
       }
     }
   }
   deactivate() {
     for (pianoKey in this.pianoKeys) {
-      pianoKey.damperLockSostenuto = false;
-      pianoKey.stopWhenConditions();
+      this.pianoKeys[pianoKey].damperLockSostenuto = false;
+      this.pianoKeys[pianoKey].stopWhenConditions();
     }
   }
 }

@@ -4,8 +4,8 @@ class PianoKey {
     this.typeOfKey = this._setTypeByNote();
     this.grandfatherNode = grandfatherNode;
     this.parentNode = this._getParentNode();
-    this.DOMbutton = this._createDOMButton();
-
+    this.DOMButton = this._createDOMButton();
+    this._setPropertyIfBlackKeyNeedsGap();
     // damper mimics the structure of a
     // real piano. TRUE = down/silence, FALSE = up/allowsound
     this.damper = true;
@@ -15,7 +15,6 @@ class PianoKey {
   }
 
 
-
   _setTypeByNote() {
     return this._isBlackKey() ? 'black-key' : 'white-key';
   }
@@ -23,34 +22,35 @@ class PianoKey {
     return this.note.indexOf('#') != -1
   }
   _getParentNode() {
-    return document.getElementById(this.type + 's');
+    return document.getElementById(this.typeOfKey + 's');
   }
 
 
   _createDOMButton() {
     let tempDOMButton = new Button({
-      'class': this.type,
+      'class': this.typeOfKey,
       'id': this.note
     }, this.parentNode)
-    tempDOMButton.activate = function () {
-      this.play();
-    }.bind(this);
-    tempDOMButton.deactivate = function () {
-      this.stop();
-    }.bind(this);
-  }
+    tempDOMButton.activate = this.play.bind(this);
+    tempDOMButton.deactivate = this.stopWhenConditions.bind(this);
 
+    return tempDOMButton;
+  }
+  _setPropertyIfBlackKeyNeedsGap() {
+    if (this.note.indexOf('D') != -1 || this.note.indexOf('A') != -1)
+      this.DOMButton.DOMelement.setAttribute('gap', '');
+  }
 
   play() {
     this.damper = false;
     this.update();
   }
   stopWhenConditions() {
-    if (!this.damperLockSustain && !this.damperLockSostenuto && !this.keyboardDown && !this.mouseDown) {
+    if (!this.damperLockSustain && !this.damperLockSostenuto && !this.DOMButton.isStateOn) {
       this.damper = true;
       this.update();
     }
-    }
+  }
   update() {
     if (this.damper) {
       // TODO stop sound in tone js

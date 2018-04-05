@@ -1,3 +1,4 @@
+/*
 var keymappingPresets = {
   basic : {
     112: 'C2',
@@ -238,3 +239,4 @@ var keycodeToText = {
   93: 'SEL',
   38: '&uarr;'
 }
+*/
