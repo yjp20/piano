@@ -3,20 +3,6 @@
   console.log('%c§ WebAudioWrapper v0.1 §', 'color: #fff; background-color: black; font-size: 20px; letter-spacing: 3px; text-shadow: 1px 1px gray')
 })();
 
-/** 
- * @class
- * @classdesc base abstract audioclient.
- *  
- * @access private
- * @augments EventTarget
- * 
- * @param {Object} [playbackOptions] - Options for playback.
- * @param {String} playbackOptions.latencyOption - sets LatencyHint
- * @param {Number} playbackOptions.sampleRate - sets sampling rate, default 44.1 kHz
- * 
- * @returns WebAudioClient
- * **/
-
 class WebAudioClient extends EventTarget {
   constructor(playbackOptions) {
     super();
@@ -121,20 +107,7 @@ WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
     }
   }
 }
-
- /** 
- * @class 
- * @classdesc - creates an audio client that uses an ArrayBuffer or Blob as source 
- * 
- * @access public
- * @augments WebAudioClient
- * @memberof! <global>
- * @param {ArrayBuffer|Blob} source - the data that will serve as the audio source
- * @param {Object} [playbackOptions] - Options for playback.
- * @param {String} playbackOptions.latencyOption - sets LatencyHint
- * @param {Number} playbackOptions.sampleRate - sets sampling rate, default 44.1 kHz
- **/
-//using some audio blob   
+ 
 WebAudioClient.fromBlob = class extends WebAudioClient {
   constructor(source, playbackOptions) {
     super(playbackOptions)
@@ -194,24 +167,6 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
   }
 }
 
- /** 
- * @class 
- * @classdesc - creates an audio client that uses an ArrayBuffer or Blob as source 
- * 
- * @access public
- * @memberof WebAudioClient
- * @augments WebAudioClient.fromBlob
- * @memberof! <global>
- * @param {ArrayBuffer|Blob} source - the data URL that will serve as the source
- * @param {Object} [playbackOptions] - Options for playback.
- * @param {String} playbackOptions.latencyOption - sets LatencyHint
- * @param {Number} playbackOptions.sampleRate - sets sampling rate, default 44.1 kHz
- * @param {Boolean} [async] - default true, makes sync or async.
- * 
- * @example 
- * var myAudioClient = new WebAudioClient.fromFileURL('files/guitar.mp3', null, false);
- * myAudioClient.play();
- **/
 WebAudioClient.fromFileURL = class extends WebAudioClient.fromBlob {
   constructor(urlString, playbackOptions) {
     super(null, playbackOptions);
