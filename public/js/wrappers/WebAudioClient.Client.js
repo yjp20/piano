@@ -3,13 +3,13 @@
   console.log('%c§ WebAudioWrapper v0.1 §', 'color: #fff; background-color: black; font-size: 20px; letter-spacing: 3px; text-shadow: 1px 1px gray')
 })();
 
-class WebAudioClient extends EventTarget {
+class WebAudioClient {
   constructor(playbackOptions) {
-    super();
+    this.hook = new EventTarget();
     this.events = {};
-    
+
     if(this.constructor == WebAudioClient) throw new Error('Do not instantiate base class. Illegal constructor')
-    
+
     //default context options
     if(!playbackOptions) {
       playbackOptions = {
@@ -38,10 +38,16 @@ class WebAudioClient extends EventTarget {
     this._suspend = function() {
       this.context.suspend();
     }
-  
+
     this._resume = function() {
       this.context.resume();
     }
+  }
+
+  bufferSource(buffer) {
+    let buf = this.context.createBufferSource();
+    buf.buffer = buffer;
+    return buf;
   }
 
   set onaudioloadend(callback) {
@@ -57,7 +63,70 @@ class WebAudioClient extends EventTarget {
   }
 }
 
-WebAudioClient.Controller = Controller;
+//required for controlling buffers
+WebAudioClient.Controller = class {
+  constructor(reference) {
+    this.ref = reference;
+    this.loop = false;
+    this.settingPlaybackRate = 1.0;
+    this.playing = false,
+    this._restartTime = 0
+    this.load = this.load;
+    this.play = this.play;
+    this.goto = this.goto;
+    this.reset = this.reset;
+  }
+  initBufferSettings() {
+    this._BUFFER_SOURCE.onended = function() {
+      if(!this._endedDueToPause) {
+        this._restartTime = 0;
+        if(this.loop) this.play();
+        window.dispatchEvent(this.ref.events.audioEnd);
+      }
+    }.bind(this);
+    this._BUFFER_SOURCE.playbackRate.value = this.settingPlaybackRate;
+  }
+  //load the new buffer source using handle to audio buffer
+  load() {
+    this._BUFFER_SOURCE = this.ref.createBuffer(this.ref.bufferHandle);
+    this._BUFFER_SOURCE.gainNode = this.ref.context.createGain();
+    this._BUFFER_SOURCE.connect(this._BUFFER_SOURCE.gainNode);
+    this._BUFFER_SOURCE.gainNode.gain.value = 1;
+    this._BUFFER_SOURCE.gainNode.connect(this.ref.context.destination);
+
+    if(!this._BUFFER_SOURCE.onended) this.initBufferSettings();
+  }
+  pause() {
+    this.playing = false;
+    this._restartTime += (new Date() - this._startTime) / 1000
+
+    this._endedDueToPause = true;
+    this._BUFFER_SOURCE.stop();
+  }
+  play() {
+    this.playing = true;
+    this._endedDueToPause = false;
+    this.load();
+    this._startTime = new Date(); //use for measuring time on pause
+
+    this._BUFFER_SOURCE.start(null, this._restartTime)
+  }
+  goto(seconds) {
+    this._restartTime = seconds;
+    if(!this.playing) this.play();
+  }
+  reset() {
+    if(this.playing) this._BUFFER_SOURCE.stop()
+    this._restartTime = 0;
+  }
+  set playbackRate(prop) {
+    this._BUFFER_SOURCE.playbackRate.value = prop;
+    this.settingPlaybackRate = prop
+  }
+}
+
+
+
 
  //using video/audio source
 WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
@@ -70,7 +139,7 @@ WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
 
   _setSource(audioSource) {
     if(!audioSource instanceof HTMLMediaElement) throw new Error('not correct')
-    
+
     this.controller = audioSource; //allow to use html play/pause
     this.source.add
     this.source.connect(this.context.destination);
@@ -78,11 +147,11 @@ WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
 
   _setEventPassover() {
     this._audioSource.onended = function() {
-      this.dispatchEvent(this.events.audioEnd)
+      this.hook.dispatchEvent(this.events.audioEnd)
     }
   }
 }
- 
+
 WebAudioClient.fromBlob = class extends WebAudioClient {
   constructor(source, playbackOptions) {
     super(playbackOptions)
@@ -98,7 +167,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
 
   _buildAudioBuffer(source) {
     return new Promise(function(resolve, reject) {
-      this.dispatchEvent(this.events.updateStart);
+      this.hook.dispatchEvent(this.events.updateStart);
       this._readArrayBuffer(source)
       .then(function(results) {
 
@@ -122,7 +191,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
     .then(function(audioBuffer) {
       this.bufferHandle = audioBuffer;
 
-      this.dispatchEvent(this.events.updateDone);
+      this.hook.dispatchEvent(this.events.updateDone);
     }.bind(this))
   }
 
@@ -132,7 +201,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
     return new Promise(function(resolve, reject) {
       if(!file) resolve();
       const reader = new FileReader();
-      
+
       reader.onload = function(res) {
         resolve(res.target.result)
       }
@@ -166,7 +235,7 @@ WebAudioClient.fromFileURL = class extends WebAudioClient.fromBlob {
       const RESPONSE_FILE = res.target.response || REQ.response;
       callback(RESPONSE_FILE);
     }
-    
+
 
     REQ.send();
 
@@ -189,7 +258,7 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
     .then(function(){
       this._initConstants();
       this._initController()
-      this.dispatchEvent(this.events.updateDone);
+      this.hook.dispatchEvent(this.events.updateDone);
     }.bind(this))
   }
 
@@ -228,19 +297,23 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
         }
 
         this.bufferHandle = this.buffers[baseNote];
-        
+
         if(difference < 0) {
           this.media.settingPlaybackRate = 1/(this.FREQUENCY_DIFF_PER_SEMITONE ** Math.abs(difference))
         } else if(difference > 0) {
           this.media.settingPlaybackRate = this.FREQUENCY_DIFF_PER_SEMITONE ** Math.abs(difference)
         } 
+
+        
+        console.log(this.media.settingPlaybackRate, difference)
+
         this.media.play();
         selfRef.activeBufferSources[note] = this.media._BUFFER_SOURCE;
       },
 
       pause(note) {
         try {
-          selfRef.activeBufferSources[note].gainNode.gain.exponentialRampToValueAtTime(0.1, selfRef.context.currentTime + 2);
+          selfRef.activeBufferSources[note].gainNode.gain.exponentialRampToValueAtTime(0.01, selfRef.context.currentTime + 0.5);
         } catch(e) {
           console.log('note was not activated, or is done.', e)
         }
@@ -256,10 +329,10 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
 
     if(noteName.length == 3) {
       freqSteps += this.LETTER_NUM[noteName[0] + noteName[1]];
-      freqSteps += (parseInt(noteName[2]) - 1) * 11 
+      freqSteps += (parseInt(noteName[2]) - 1) * 11
     } else {
       freqSteps += this.LETTER_NUM[noteName[0]];
-      freqSteps += (parseInt(noteName[1]) - 1) * 11 
+      freqSteps += (parseInt(noteName[1]) - 1) * 11
     }
 
     return freqSteps;
@@ -272,11 +345,9 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
         this._buildAudioBuffer(res)
         .then(function(buf){
           this.buffers[name] = buf
-          resolve();  
+          resolve();
         }.bind(this))
       }.bind(this))
     }.bind(this))
   }
 } 
- 
-var yj = new WebAudioClient.fromFileURL('audio/guitar/C5.mp3')

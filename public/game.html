@@ -1,29 +1,36 @@
 <!doctype html>
 <html>
   <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-
     <link rel="stylesheet" type="text/css" href="css/range.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="lib/Tone.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/game.css">
   </head>
   <body>
     <div id="keyboard">
-      <div id="white-keys">
-
-      </div>
-      <div id="black-keys">
-
-      </div>
+      <div id="white-keys"></div>
+      <div id="black-keys"></div>
     </div>
     <div id="controls">
-      <div id="pedal-container">
+      <div id="other-left">
+        <select id="instrument">
+          <option selected>piano</option>
+          <option>guitar</option>
+          <option>violin</option>
+          <option>xylophone</option>
+        </select>
+        <select id="keymap">
+          <option selected> functional </option>
+          <option> basic </option>
+          <option> compact </option>
+        </select>
       </div>
-      <div id="other">
-
+      <div id="pedal-container"></div>
+      <div id="other-right">
       </div>
     </div>
     <script src='compiled.js'></script>
+    <script>
+      var keyboard = new PianoKeyboard(document.getElementById('keyboard'));
+    </script>
   </body>
 
 </html>

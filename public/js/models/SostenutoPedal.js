@@ -3,14 +3,14 @@ class SostenutoPedal extends Pedals {
     this.type = 'sostenuto';
   }
   activate() {
-    for (pianoKey in this.pianoKeys) {
+    for (let pianoKey in this.pianoKeys) {
       if (this.pianoKeys[pianoKey].isPlaying()) {
         this.pianoKeys[pianoKey].damperLockSostenuto = true;
       }
     }
   }
   deactivate() {
-    for (pianoKey in this.pianoKeys) {
+    for (let pianoKey in this.pianoKeys) {
       this.pianoKeys[pianoKey].damperLockSostenuto = false;
       this.pianoKeys[pianoKey].stopWhenConditions();
     }

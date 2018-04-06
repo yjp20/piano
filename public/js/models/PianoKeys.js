@@ -1,10 +1,11 @@
 class PianoKey {
-  constructor(grandfatherNode, note) {
+  constructor(grandfather, note) {
     this.note = note;
     this.typeOfKey = this._setTypeByNote();
-    this.grandfatherNode = grandfatherNode;
+    this.grandfather = grandfather;
+    this.grandfatherNode = grandfather.DOMnode;
     this.parentNode = this._getParentNode();
-    this.DOMButton = this._createDOMButton();
+    this.jsButton = this._createjsButton();
     this._setPropertyIfBlackKeyNeedsGap();
     // damper mimics the structure of a
     // real piano. TRUE = down/silence, FALSE = up/allowsound
@@ -26,36 +27,42 @@ class PianoKey {
   }
 
 
-  _createDOMButton() {
-    let tempDOMButton = new Button({
+  _createjsButton() {
+    let tempjsButton = new Button({
       'class': this.typeOfKey,
       'id': this.note
     }, this.parentNode)
-    tempDOMButton.activate = this.play.bind(this);
-    tempDOMButton.deactivate = this.stopWhenConditions.bind(this);
+    tempjsButton.activate = this.play.bind(this);
+    tempjsButton.deactivate = this.stopWhenConditions.bind(this);
 
-    return tempDOMButton;
+    return tempjsButton;
   }
   _setPropertyIfBlackKeyNeedsGap() {
     if (this.note.indexOf('D') != -1 || this.note.indexOf('A') != -1)
-      this.DOMButton.DOMelement.setAttribute('gap', '');
+      this.jsButton.DOMelement.setAttribute('gap', '');
+  }
+
+  setText(string) {
+    this.jsButton.DOMelement.innerHTML = string;
   }
 
   play() {
-    this.damper = false;
-    this.update();
+    if (!this.damper) {
+      this.damper = false;
+      this.update();
+    }
   }
   stopWhenConditions() {
-    if (!this.damperLockSustain && !this.damperLockSostenuto && !this.DOMButton.isStateOn) {
+    if (!this.damperLockSustain && !this.damperLockSostenuto && !this.jsButton.isStateOn) {
       this.damper = true;
       this.update();
     }
   }
   update() {
     if (this.damper) {
-      // TODO stop sound in tone js
+      grandfather.audioMain.controller.stop(this.note);
     } else {
-      // TODO play sound in tone js
+      grandfather.audioMain.controller.play(this.note);
     }
   }
   isPlaying() {

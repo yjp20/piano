@@ -6,8 +6,8 @@ class Button {
     this._modifyDOMElement();
 
     // multiple inputs, mouse, keyboard
-    this.keyboardDown = false;
-    this.mouseDown = false;
+    this.keyboardIsDown = false;
+    this.mouseIsDown = false;
   }
   get isStateOn() {
     return this.keyboardDown || this.mouseDown;
@@ -48,19 +48,21 @@ class Button {
     }.bind(this))
   }
   _mouseDown() {
-    this.mouseDown = true;
+    this.mouseIsDown = true;
     this._parentActivate();
   }
   _mouseUp() {
-    this.mouseDown = false;
+    this.mouseIsDown = false;
     this._parentDeactivate();
   }
   keyboardDown() {
-    this.keyboardDown = true;
-    this._parentActivate();
+    if (!this.keyboardIsDown) {
+      this.keyboardIsDown = true;
+      this._parentActivate();
+    }
   }
   keyboardUp() {
-    this.keyboardDown = false;
+    this.keyboardIsDown = false;
     this._parentDeactivate();
   }
   _parentActivate() {
@@ -68,7 +70,7 @@ class Button {
     this.activate();
   }
   _parentDeactivate() {
-    if (!(this.keyboardDown || this.mouseDown)) {
+    if (!(this.keyboardIsDown || this.mouseIsDown)) {
       this.DOMelement.removeAttribute('pressed');
       this.deactivate()
     }

@@ -29,6 +29,12 @@ body{
 .black-key {
   box-sizing: border-box;
   display: inline-block;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  text-align: center;
 }
 .white-key {
   pointer-events: all;
@@ -45,7 +51,7 @@ body{
   border-radius: 2px;
   z-index:5;
   outline: none;
-  padding-top: 150px;
+  padding-top: 160px;
   transition: all 0.05s;
   margin-bottom: 20px;
 }
@@ -90,39 +96,53 @@ body{
 }
 
 #controls {
+  font-size: 14px;
+  color: white;
   width: 800px;
-  height:40px;
+  height:50px;
   background-color: #444;
+  border-top: 1px solid #e5e5e5;
+
   display:flex;
+  flex-direction:row;
   justify-content: space-between;
+  align-items: center;
 }
 
 #pedal-container {
+  padding: 5px;
   display: flex;
-  background-color: #333;
-  width: 130px;
-  height: 20px;
-  padding: 10px;
+  width: 65px;
+  height: 40px;
   align-items: center;
   justify-content: space-between;
 }
 
 .pedals {
-  border-radius: 10px;
-  margin-right:4px;
+  padding-top:10px;
+  text-align: center;
+  color: black;
   border: none;
-  background-color: #888;
-  width: 34px;
-  height: 20px;
+  background-color: #fff;
+  width: 18px;
+  border-radius: 2px;
+  height: 30px;
 }
 .pedals[pressed] {
-  background-color: #ffc300;
+  background-color: #ddd;
 }
 
 #other-left,
 #other-right {
-  height: 40px;
+  background-color: #333;
+  display:flex;
+  padding: 10px;
+  height: 30px;
+  justify-content: center:
+  align-items:center;
+  width: 160px;
 }
+
 select {
   color: #999;
   vertical-align: middle;
@@ -130,8 +150,7 @@ select {
   border: none;
   padding: 5px;
   border-radius: 5px;
-  background: #fff;
-  margin-left: 20px;
+  background: #f7f7f7;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -150,6 +169,11 @@ input[type=range]::-moz-focus-inner {
 input[type=checkbox] {
   display: none;
 }
+#instrument {
+  width: 70px;
+  height: 30px;
+}
+#
 .toggle {
   margin-right: 15px;
   width: 35px;

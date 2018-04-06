@@ -2,3 +2,5 @@ config.json
 node_modules/
 *.swp
 .DS_Store
+compiled.js
+compiled.js.map
