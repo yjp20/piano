@@ -8,10 +8,11 @@ class PianoKeyboard {
     this._createPedals();
     this._addKeyListener();
     this.setKeyBindings(keymapping['functional']);
+    this.loadInstrument(instruments['piano']);
   };
   _generatePianoKeys(callback) {
     for(let i = 0; i<this.notesListing.length; i++)
-      this.pianoKeys[this.notesListing[i]] = new PianoKey(this.DOMnode, this.notesListing[i]);
+      this.pianoKeys[this.notesListing[i]] = new PianoKey(this, this.notesListing[i]);
   };
   _createPedals() {
     this.UnaCordePedal = new UnaCordePedal(this.pianoKeys);
@@ -30,6 +31,11 @@ class PianoKeyboard {
         this.pianoKeys[key].jsButton.keyboardUp();
     }.bind(this));
   }
+  loadInstrument(links) {
+    console.log(links);
+    this.audioMain = new WebAudioClient.Sampler(links);
+    this.audioSoft = new WebAudioClient.Sampler(links);
+  }
   setKeyBindings(assignment) {
     this.currentKeymapping = assignment;
 
@@ -39,8 +45,23 @@ class PianoKeyboard {
     for (let code in assignment) {
       let key = assignment[code];
       let value = keyCodeToText(code);
-      if (key[0] != 'p') /*this filters pedals*/
+      console.log(key, value)
+      if (key[0] != 'p') { /*this filters pedals*/
         this.pianoKeys[key].setText(value);
+      }
+      if (key[0] == 'p') {
+        switch(key) {
+          case 'pedal_1':
+            this.UnaCordePedal.setText(value);
+            break;
+          case 'pedal_2':
+            this.SostenutoPedal.setText(value);
+            break;
+          case 'pedal_3':
+            this.SustainPedal.setText(value);
+            break;
+        }
+      }
     }
   }
 }

@@ -1,8 +1,9 @@
 class PianoKey {
-  constructor(grandfatherNode, note) {
+  constructor(grandfather, note) {
     this.note = note;
     this.typeOfKey = this._setTypeByNote();
-    this.grandfatherNode = grandfatherNode;
+    this.grandfather = grandfather;
+    this.grandfatherNode = grandfather.DOMnode;
     this.parentNode = this._getParentNode();
     this.jsButton = this._createjsButton();
     this._setPropertyIfBlackKeyNeedsGap();
@@ -59,9 +60,9 @@ class PianoKey {
   }
   update() {
     if (this.damper) {
-      // TODO stop sound in tone js
+      grandfather.audioMain.controller.stop(this.note);
     } else {
-      // TODO play sound in tone js
+      grandfather.audioMain.controller.play(this.note);
     }
   }
   isPlaying() {

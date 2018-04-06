@@ -7,9 +7,9 @@ class WebAudioClient extends EventTarget {
   constructor(playbackOptions) {
     super();
     this.events = {};
-    
+
     if(this.constructor == WebAudioClient) throw new Error('Do not instantiate base class. Illegal constructor')
-    
+
     //default context options
     if(!playbackOptions) {
       playbackOptions = {
@@ -45,7 +45,7 @@ class WebAudioClient extends EventTarget {
     this._suspend = function() {
       this.context.suspend();
     }
-  
+
     this._resume = function() {
       this.context.resume();
     }
@@ -66,18 +66,18 @@ class WebAudioClient extends EventTarget {
 
 WebAudioClient.Controller = Controller;
 
-/** 
- * @class 
- * @classdesc - creates an audio client that is controlled with a HTMLMediaElement 
+/**
+ * @class
+ * @classdesc - creates an audio client that is controlled with a HTMLMediaElement
  * @memberof! <global>
  * @access public
  * @augments WebAudioClient
- * 
+ *
  * @param {HTMLMediaElement} source - the element that will serve as the audio source
  * @param {Object} [playbackOptions] - Options for playback.
  * @param {String} playbackOptions.latencyOption - sets LatencyHint
  * @param {Number} playbackOptions.sampleRate - sets sampling rate, default 44.1 kHz
- * 
+ *
  * @example
  * var htmlAudio = new Audio('files/guitar.mp3');
  * var myAudio = new WebAudioClient.fromHTMLElement(htmlAudio)
@@ -95,7 +95,7 @@ WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
 
   _setSource(audioSource) {
     if(!audioSource instanceof HTMLMediaElement) throw new Error('not correct')
-    
+
     this.controller = audioSource; //allow to use html play/pause
     this.source.add
     this.source.connect(this.context.destination);
@@ -107,7 +107,7 @@ WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
     }
   }
 }
- 
+
 WebAudioClient.fromBlob = class extends WebAudioClient {
   constructor(source, playbackOptions) {
     super(playbackOptions)
@@ -157,7 +157,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
     return new Promise(function(resolve, reject) {
       if(!file) resolve();
       const reader = new FileReader();
-      
+
       reader.onload = function(res) {
         resolve(res.target.result)
       }
@@ -188,7 +188,7 @@ WebAudioClient.fromFileURL = class extends WebAudioClient.fromBlob {
       const RESPONSE_FILE = res.target.response || REQ.response;
       callback(RESPONSE_FILE);
     }
-    
+
 
     REQ.send();
 
@@ -250,12 +250,12 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
         }
 
         this.bufferHandle = this.buffers[baseNote];
-        
+
         if(difference < 0) {
           this.media.settingPlaybackRate = 1/(this.FREQUENCY_DIFF_PER_SEMITONE ** Math.abs(difference))
         } else if(difference > 0) {
           this.media.settingPlaybackRate = this.FREQUENCY_DIFF_PER_SEMITONE ** Math.abs(difference)
-        } 
+        }
         console.log(this.media.settingPlaybackRate, difference)
         this.media.play();
         selfRef.activeBufferSources[note] = this.media._BUFFER_SOURCE;
@@ -279,10 +279,10 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
 
     if(noteName.length == 3) {
       freqSteps += this.LETTER_NUM[noteName[0] + noteName[1]];
-      freqSteps += (parseInt(noteName[2]) - 1) * 11 
+      freqSteps += (parseInt(noteName[2]) - 1) * 11
     } else {
       freqSteps += this.LETTER_NUM[noteName[0]];
-      freqSteps += (parseInt(noteName[1]) - 1) * 11 
+      freqSteps += (parseInt(noteName[1]) - 1) * 11
     }
 
     return freqSteps;
@@ -295,10 +295,9 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
         this._buildAudioBuffer(res)
         .then(function(buf){
           this.buffers[name] = buf
-          resolve();  
+          resolve();
         }.bind(this))
       }.bind(this))
     }.bind(this))
   }
-} 
- 
+}

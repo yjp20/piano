@@ -21,4 +21,7 @@ class Pedals {
     }.bind(this);
     return tempjsButton;
   }
+  setText(string) {
+    this.jsButton.DOMelement.innerHTML = string;
+  }
 }
