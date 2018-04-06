@@ -3,9 +3,9 @@
   console.log('%c§ WebAudioWrapper v0.1 §', 'color: #fff; background-color: black; font-size: 20px; letter-spacing: 3px; text-shadow: 1px 1px gray')
 })();
 
-class WebAudioClient extends EventTarget {
+class WebAudioClient {
   constructor(playbackOptions) {
-    super();
+    this.hook = new EventTarget();
     this.events = {};
 
     if(this.constructor == WebAudioClient) throw new Error('Do not instantiate base class. Illegal constructor')
@@ -24,13 +24,6 @@ class WebAudioClient extends EventTarget {
 
     //call AudioContext
     this._buildContext(playbackOptions)
-
-    //node
-    this.convNode = this.context.createConvolver();
-    this.gainNode = this.context.createGain();
-
-    //
-    this.convNode.normalize = true;
   }
 
   _buildContext(playbackOptions) {
@@ -51,6 +44,12 @@ class WebAudioClient extends EventTarget {
     }
   }
 
+  bufferSource(buffer) {
+    let buf = this.context.createBufferSource();
+    buf.buffer = buffer;
+    return buf;
+  }
+
   set onaudioloadend(callback) {
     this.addEventListener('audioUpdateDone', callback)
   }
@@ -64,25 +63,70 @@ class WebAudioClient extends EventTarget {
   }
 }
 
-WebAudioClient.Controller = Controller;
+//required for controlling buffers
+WebAudioClient.Controller = class {
+  constructor(reference) {
+    this.ref = reference;
+    this.loop = false;
+    this.settingPlaybackRate = 1.0;
+    this.playing = false,
+    this._restartTime = 0
+    this.load = this.load;
+    this.play = this.play;
+    this.goto = this.goto;
+    this.reset = this.reset;
+  }
+  initBufferSettings() {
+    this._BUFFER_SOURCE.onended = function() {
+      if(!this._endedDueToPause) {
+        this._restartTime = 0;
+        if(this.loop) this.play();
+        window.dispatchEvent(this.ref.events.audioEnd);
+      }
+    }.bind(this);
+    this._BUFFER_SOURCE.playbackRate.value = this.settingPlaybackRate;
+  }
+  //load the new buffer source using handle to audio buffer
+  load() {
+    this._BUFFER_SOURCE = this.ref.createBuffer(this.ref.bufferHandle);
+    this._BUFFER_SOURCE.gainNode = this.ref.context.createGain();
+    this._BUFFER_SOURCE.connect(this._BUFFER_SOURCE.gainNode);
+    this._BUFFER_SOURCE.gainNode.gain.value = 1;
+    this._BUFFER_SOURCE.gainNode.connect(this.ref.context.destination);
 
-/**
- * @class
- * @classdesc - creates an audio client that is controlled with a HTMLMediaElement
- * @memberof! <global>
- * @access public
- * @augments WebAudioClient
- *
- * @param {HTMLMediaElement} source - the element that will serve as the audio source
- * @param {Object} [playbackOptions] - Options for playback.
- * @param {String} playbackOptions.latencyOption - sets LatencyHint
- * @param {Number} playbackOptions.sampleRate - sets sampling rate, default 44.1 kHz
- *
- * @example
- * var htmlAudio = new Audio('files/guitar.mp3');
- * var myAudio = new WebAudioClient.fromHTMLElement(htmlAudio)
- * myAudio.play();
- **/
+    if(!this._BUFFER_SOURCE.onended) this.initBufferSettings();
+  }
+  pause() {
+    this.playing = false;
+    this._restartTime += (new Date() - this._startTime) / 1000
+
+    this._endedDueToPause = true;
+    this._BUFFER_SOURCE.stop();
+  }
+  play() {
+    this.playing = true;
+    this._endedDueToPause = false;
+    this.load();
+    this._startTime = new Date(); //use for measuring time on pause
+
+    this._BUFFER_SOURCE.start(null, this._restartTime)
+  }
+  goto(seconds) {
+    this._restartTime = seconds;
+    if(!this.playing) this.play();
+  }
+  reset() {
+    if(this.playing) this._BUFFER_SOURCE.stop()
+    this._restartTime = 0;
+  }
+  set playbackRate(prop) {
+    this._BUFFER_SOURCE.playbackRate.value = prop;
+    this.settingPlaybackRate = prop
+  }
+}
+
+
+
 
  //using video/audio source
 WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
@@ -103,7 +147,7 @@ WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
 
   _setEventPassover() {
     this._audioSource.onended = function() {
-      this.dispatchEvent(this.events.audioEnd)
+      this.hook.dispatchEvent(this.events.audioEnd)
     }
   }
 }
@@ -123,7 +167,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
 
   _buildAudioBuffer(source) {
     return new Promise(function(resolve, reject) {
-      this.dispatchEvent(this.events.updateStart);
+      this.hook.dispatchEvent(this.events.updateStart);
       this._readArrayBuffer(source)
       .then(function(results) {
 
@@ -142,12 +186,12 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
       return;
     }
     if(!audioSource instanceof Blob) console.log('not proper cons -- use realloc.')
-    console.log(audioSource)
+
     this._buildAudioBuffer(audioSource)
     .then(function(audioBuffer) {
       this.bufferHandle = audioBuffer;
 
-      this.dispatchEvent(this.events.updateDone);
+      this.hook.dispatchEvent(this.events.updateDone);
     }.bind(this))
   }
 
@@ -161,7 +205,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
       reader.onload = function(res) {
         resolve(res.target.result)
       }
-      console.log(file)
+
       reader.readAsArrayBuffer(file)
     })
   }
@@ -172,9 +216,12 @@ WebAudioClient.fromFileURL = class extends WebAudioClient.fromBlob {
     super(null, playbackOptions);
     this.controller = new WebAudioClient.Controller(this)
 
-    this._callXHRRequest(urlString, function(res){
-      this._setSource(res)
-    }.bind(this));
+    if(this.constructor == WebAudioClient.fromFileURL) {
+      this._callXHRRequest(urlString, function(res){
+        this._setSource(res)
+      }.bind(this));
+    }
+    
   }
 
   _callXHRRequest(urlString, callback) {
@@ -202,16 +249,16 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
     this._bufferSources = {};
     this.activeBufferSources = {};
     let promises = []
-
-    for(let noteName in urlStrings) {
-      promises.push(this._buildAudioArray(urlStrings[noteName], noteName))
+    let baseURL = urlStrings.baseURL;
+    for(let noteName in urlStrings.files) {
+      promises.push(this._buildAudioArray(baseURL + urlStrings.files[noteName], noteName))
     }
 
     Promise.all(promises)
     .then(function(){
       this._initConstants();
       this._initController()
-      this.dispatchEvent(this.events.updateDone);
+      this.hook.dispatchEvent(this.events.updateDone);
     }.bind(this))
   }
 
@@ -255,15 +302,18 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
           this.media.settingPlaybackRate = 1/(this.FREQUENCY_DIFF_PER_SEMITONE ** Math.abs(difference))
         } else if(difference > 0) {
           this.media.settingPlaybackRate = this.FREQUENCY_DIFF_PER_SEMITONE ** Math.abs(difference)
-        }
+        } 
+
+        
         console.log(this.media.settingPlaybackRate, difference)
+
         this.media.play();
         selfRef.activeBufferSources[note] = this.media._BUFFER_SOURCE;
       },
 
       pause(note) {
         try {
-          selfRef.activeBufferSources[note].gainNode.gain.exponentialRampToValueAtTime(0.1, selfRef.context.currentTime + 2);
+          selfRef.activeBufferSources[note].gainNode.gain.exponentialRampToValueAtTime(0.01, selfRef.context.currentTime + 0.5);
         } catch(e) {
           console.log('note was not activated, or is done.', e)
         }
@@ -300,4 +350,4 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
       }.bind(this))
     }.bind(this))
   }
-}
+} 

@@ -32,7 +32,6 @@ class PianoKeyboard {
     }.bind(this));
   }
   loadInstrument(links) {
-    console.log(links);
     this.audioMain = new WebAudioClient.Sampler(links);
     this.audioSoft = new WebAudioClient.Sampler(links);
   }
