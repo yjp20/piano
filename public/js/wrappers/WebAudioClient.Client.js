@@ -24,13 +24,6 @@ class WebAudioClient extends EventTarget {
 
     //call AudioContext
     this._buildContext(playbackOptions)
-
-    //node
-    this.convNode = this.context.createConvolver();
-    this.gainNode = this.context.createGain();
-
-    //
-    this.convNode.normalize = true;
   }
 
   _buildContext(playbackOptions) {
@@ -65,24 +58,6 @@ class WebAudioClient extends EventTarget {
 }
 
 WebAudioClient.Controller = Controller;
-
-/** 
- * @class 
- * @classdesc - creates an audio client that is controlled with a HTMLMediaElement 
- * @memberof! <global>
- * @access public
- * @augments WebAudioClient
- * 
- * @param {HTMLMediaElement} source - the element that will serve as the audio source
- * @param {Object} [playbackOptions] - Options for playback.
- * @param {String} playbackOptions.latencyOption - sets LatencyHint
- * @param {Number} playbackOptions.sampleRate - sets sampling rate, default 44.1 kHz
- * 
- * @example
- * var htmlAudio = new Audio('files/guitar.mp3');
- * var myAudio = new WebAudioClient.fromHTMLElement(htmlAudio)
- * myAudio.play();
- **/
 
  //using video/audio source
 WebAudioClient.fromHTMLMediaElement = class extends WebAudioClient {
@@ -172,9 +147,12 @@ WebAudioClient.fromFileURL = class extends WebAudioClient.fromBlob {
     super(null, playbackOptions);
     this.controller = new WebAudioClient.Controller(this)
 
-    this._callXHRRequest(urlString, function(res){
-      this._setSource(res)
-    }.bind(this));
+    if(this.constructor == WebAudioClient.fromFileURL) {
+      this._callXHRRequest(urlString, function(res){
+        this._setSource(res)
+      }.bind(this));
+    }
+    
   }
 
   _callXHRRequest(urlString, callback) {
@@ -202,9 +180,9 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
     this._bufferSources = {};
     this.activeBufferSources = {};
     let promises = []
-
-    for(let noteName in urlStrings) {
-      promises.push(this._buildAudioArray(urlStrings[noteName], noteName))
+    let baseURL = urlStrings.baseURL;
+    for(let noteName in urlStrings.files) {
+      promises.push(this._buildAudioArray(baseURL + urlStrings.files[noteName], noteName))
     }
 
     Promise.all(promises)
@@ -256,7 +234,6 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
         } else if(difference > 0) {
           this.media.settingPlaybackRate = this.FREQUENCY_DIFF_PER_SEMITONE ** Math.abs(difference)
         } 
-        console.log(this.media.settingPlaybackRate, difference)
         this.media.play();
         selfRef.activeBufferSources[note] = this.media._BUFFER_SOURCE;
       },
@@ -302,3 +279,4 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
   }
 } 
  
+var yj = new WebAudioClient.fromFileURL('audio/guitar/C5.mp3')
