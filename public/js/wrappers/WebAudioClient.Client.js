@@ -186,7 +186,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
       return;
     }
     if(!audioSource instanceof Blob) console.log('not proper cons -- use realloc.')
-    console.log(audioSource)
+
     this._buildAudioBuffer(audioSource)
     .then(function(audioBuffer) {
       this.bufferHandle = audioBuffer;
@@ -205,7 +205,7 @@ WebAudioClient.fromBlob = class extends WebAudioClient {
       reader.onload = function(res) {
         resolve(res.target.result)
       }
-      console.log(file)
+
       reader.readAsArrayBuffer(file)
     })
   }
