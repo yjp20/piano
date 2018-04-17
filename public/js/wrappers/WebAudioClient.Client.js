@@ -84,14 +84,14 @@ WebAudioClient.Controller = class {
         window.dispatchEvent(this.ref.events.audioEnd);
       }
     }.bind(this);
-    this._BUFFER_SOURCE.playbackRate.value = this.settingPlaybackRate;
+    this._BUFFER_SOURCE.playbackRate.setValueAtTime(this.settingPlaybackRate, this.ref.context.currentTime + 0.0001)
   }
   //load the new buffer source using handle to audio buffer
   load() {
-    this._BUFFER_SOURCE = this.ref.createBuffer(this.ref.bufferHandle);
+    this._BUFFER_SOURCE = this.ref.bufferSource(this.ref.bufferHandle);
     this._BUFFER_SOURCE.gainNode = this.ref.context.createGain();
     this._BUFFER_SOURCE.connect(this._BUFFER_SOURCE.gainNode);
-    this._BUFFER_SOURCE.gainNode.gain.value = 1;
+    this._BUFFER_SOURCE.gainNode.gain.setValueAtTime(1, this.ref.context.currentTime + 0.00001)
     this._BUFFER_SOURCE.gainNode.connect(this.ref.context.destination);
 
     if(!this._BUFFER_SOURCE.onended) this.initBufferSettings();
@@ -120,7 +120,7 @@ WebAudioClient.Controller = class {
     this._restartTime = 0;
   }
   set playbackRate(prop) {
-    this._BUFFER_SOURCE.playbackRate.value = prop;
+    this._BUFFER_SOURCE.playbackRate.setValueAtTime(prop, this.ref.context.currentTime + 0.001);
     this.settingPlaybackRate = prop
   }
 }
@@ -284,6 +284,7 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
     this.media = new WebAudioClient.Controller(this);
     let selfRef = this;
 
+    //override basic controller for the playing
     this.controller = {
       play(note) {
         let difference = 1000000;
@@ -305,7 +306,6 @@ WebAudioClient.Sampler = class extends WebAudioClient.fromFileURL {
         } 
 
         
-        console.log(this.media.settingPlaybackRate, difference)
 
         this.media.play();
         selfRef.activeBufferSources[note] = this.media._BUFFER_SOURCE;
