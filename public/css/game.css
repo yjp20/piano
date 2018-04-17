@@ -150,11 +150,14 @@ select {
   border: none;
   padding: 5px;
   border-radius: 5px;
-  background: #f7f7f7;
+  background: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin-right: 10px;
+}
+select:hover {
+  color: #ddd;
 }
 input[type=range] {
   vertical-align: middle;
@@ -173,7 +176,6 @@ input[type=checkbox] {
   width: 70px;
   height: 30px;
 }
-#
 .toggle {
   margin-right: 15px;
   width: 35px;
