@@ -1,4 +1,4 @@
-class Button {
+class jsButton {
   constructor(attributes, parentNode) {
     this.parentNode = parentNode;
     this.DOMelement = this._createDOMelement();
@@ -9,9 +9,8 @@ class Button {
     this.keyboardIsDown = false;
     this.mouseIsDown = false;
   }
-  get isStateOn() {
-    return this.keyboardDown || this.mouseDown;
-  }
+
+
   _createDOMelement() {
     return document.createElement('div');
   }
@@ -27,6 +26,8 @@ class Button {
   _appendDOMElement() {
     this.parentNode.appendChild(this.DOMelement);
   }
+
+
   _addMouseListener() {
     this.DOMelement.addEventListener('mousedown', function () {
       this._mouseDown();
@@ -49,30 +50,39 @@ class Button {
   }
   _mouseDown() {
     this.mouseIsDown = true;
-    this._parentActivate();
+    this._activate();
   }
   _mouseUp() {
     this.mouseIsDown = false;
-    this._parentDeactivate();
+    this._deactivate();
   }
   keyboardDown() {
     if (!this.keyboardIsDown) {
       this.keyboardIsDown = true;
-      this._parentActivate();
+      this._activate();
     }
   }
   keyboardUp() {
     this.keyboardIsDown = false;
-    this._parentDeactivate();
+    this._deactivate();
   }
-  _parentActivate() {
+  isStateOn() {
+    return this.keyboardIsDown || this.mouseIsDown;
+  }
+
+
+  _activate() {
     this.DOMelement.setAttribute('pressed', '');
-    this.activate();
+    // use super();
   }
-  _parentDeactivate() {
+  _deactivate() {
     if (!(this.keyboardIsDown || this.mouseIsDown)) {
+      console.log("deactivate");
       this.DOMelement.removeAttribute('pressed');
-      this.deactivate()
+      // use super():
     }
+  }
+  setText(string) {
+    this.DOMelement.innerHTML = string;
   }
 }

@@ -21,12 +21,15 @@ class PianoKeyboard {
   }
   _addKeyListener() {
     document.addEventListener('keydown', function (e) {
+      e.preventDefault();
       let key = this.currentKeymapping[e.keyCode];
+      console.log(key);
       if (key != undefined && key[0] != 'p') /* filters pedals */
         this.pianoKeys[key].jsButton.keyboardDown();
     }.bind(this));
     document.addEventListener('keyup', function (e) {
       let key = this.currentKeymapping[e.keyCode];
+
       if (key != undefined && key[0] != 'p') /* filters pedals */
         this.pianoKeys[key].jsButton.keyboardUp();
     }.bind(this));

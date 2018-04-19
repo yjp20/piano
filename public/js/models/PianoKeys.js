@@ -47,22 +47,26 @@ class PianoKey {
   }
 
   play() {
-    if (!this.damper) {
+    console.log('play1: ' + this.note);
+    if (this.damper) {
       this.damper = false;
       this.update();
     }
   }
   stopWhenConditions() {
-    if (!this.damperLockSustain && !this.damperLockSostenuto && !this.jsButton.isStateOn) {
+    console.log(this.damperLockSustain, this.damperLockSostenuto, this.jsButton.isStateOn());
+    if (!this.damperLockSustain && !this.damperLockSostenuto && !this.jsButton.isStateOn()) {
       this.damper = true;
       this.update();
     }
   }
   update() {
     if (this.damper) {
-      grandfather.audioMain.controller.stop(this.note);
+      console.log('stop: ' + this.note);
+      this.grandfather.audioMain.controller.pause(this.note);
     } else {
-      grandfather.audioMain.controller.play(this.note);
+      console.log('play: ' + this.note);
+      this.grandfather.audioMain.controller.play(this.note);
     }
   }
   isPlaying() {
