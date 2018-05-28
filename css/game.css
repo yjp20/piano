@@ -112,7 +112,7 @@ body{
 #pedal-container {
   padding: 5px;
   display: flex;
-  width: 65px;
+  width: 75px;
   height: 40px;
   align-items: center;
   justify-content: space-between;
@@ -121,15 +121,18 @@ body{
 .pedals {
   padding-top:10px;
   text-align: center;
-  color: black;
+  color: #777;
   border: none;
-  background-color: #fff;
-  width: 18px;
+  width: 23px;
+  border: 2px solid #777;
   border-radius: 2px;
+  margin: 2px;
   height: 30px;
 }
+
 .pedals[pressed] {
-  background-color: #ddd;
+  background-color: #777;
+  color: #333;
 }
 
 #other-left,

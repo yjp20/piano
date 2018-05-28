@@ -1,16 +1,18 @@
 class jsButton {
-  constructor(attributes, parentNode) {
+  constructor(attributes, parentNode, activate=true) {
+    if (activate) this.init(attributes, parentNode);
+  }
+  
+  init(attributes, parentNode) {
     this.parentNode = parentNode;
     this.DOMelement = this._createDOMelement();
     this.setDOMAttributes(attributes);
     this._modifyDOMElement();
-
     // multiple inputs, mouse, keyboard
     this.keyboardIsDown = false;
     this.mouseIsDown = false;
   }
-
-
+  
   _createDOMelement() {
     return document.createElement('div');
   }
@@ -25,6 +27,10 @@ class jsButton {
   }
   _appendDOMElement() {
     this.parentNode.appendChild(this.DOMelement);
+  }
+  
+  setText(string) {
+    this.DOMelement.innerHTML = string;
   }
 
 
@@ -50,39 +56,37 @@ class jsButton {
   }
   _mouseDown() {
     this.mouseIsDown = true;
-    this._activate();
+    this._update(true);
   }
   _mouseUp() {
     this.mouseIsDown = false;
-    this._deactivate();
+    this._update();
   }
   keyboardDown() {
+    // filter repeat keys
     if (!this.keyboardIsDown) {
       this.keyboardIsDown = true;
-      this._activate();
+      this._update(true);
     }
   }
   keyboardUp() {
     this.keyboardIsDown = false;
-    this._deactivate();
+    this._update();
   }
   isStateOn() {
     return this.keyboardIsDown || this.mouseIsDown;
   }
-
-
-  _activate() {
+  _update() {
+    if (this.isStateOn()) 
+      this.activate();
+    else
+      this.deactivate();
+  }
+  activate() {
     this.DOMelement.setAttribute('pressed', '');
     // use super();
   }
-  _deactivate() {
-    if (!(this.keyboardIsDown || this.mouseIsDown)) {
-      console.log("deactivate");
-      this.DOMelement.removeAttribute('pressed');
-      // use super():
-    }
-  }
-  setText(string) {
-    this.DOMelement.innerHTML = string;
+  deactivate() {
+    this.DOMelement.removeAttribute('pressed');
   }
 }

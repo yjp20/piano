@@ -3,6 +3,7 @@ class SustainPedal extends Pedals {
     this.type = 'sustain';
   }
   activate() {
+    super.activate();
     console.log(this.type);
     for (let pianoKey in this.pianoKeys) {
       if (this.pianoKeys[pianoKey].isPlaying()) {
@@ -11,9 +12,10 @@ class SustainPedal extends Pedals {
     }
   }
   deactivate() {
+    super.deactivate();
     for (let pianoKey in this.pianoKeys) {
       this.pianoKeys[pianoKey].damperLockSustain = false;
-      this.pianoKeys[pianoKey].stopWhenConditions();
+      this.pianoKeys[pianoKey]._update();
     }
   }
 }

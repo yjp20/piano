@@ -25,13 +25,23 @@ class PianoKeyboard {
       let key = this.currentKeymapping[e.keyCode];
       console.log(key);
       if (key != undefined && key[0] != 'p') /* filters pedals */
-        this.pianoKeys[key].jsButton.keyboardDown();
+        this.pianoKeys[key].keyboardDown();
+      else if (key != undefined && key[0] == 'p') {
+        if (key == 'pedal_1') this.UnaCordePedal.keyboardDown();
+        if (key == 'pedal_2') this.SostenutoPedal.keyboardDown();
+        if (key == 'pedal_3') this.SustainPedal.keyboardDown();
+      }
     }.bind(this));
     document.addEventListener('keyup', function (e) {
       let key = this.currentKeymapping[e.keyCode];
-
+      
       if (key != undefined && key[0] != 'p') /* filters pedals */
-        this.pianoKeys[key].jsButton.keyboardUp();
+        this.pianoKeys[key].keyboardUp();
+      else if (key != undefined && key[0] == 'p') {
+        if (key == 'pedal_1') this.UnaCordePedal.keyboardUp();
+        if (key == 'pedal_2') this.SostenutoPedal.keyboardUp();
+        if (key == 'pedal_3') this.SustainPedal.keyboardUp();
+      }
     }.bind(this));
   }
   loadInstrument(links) {

@@ -1,8 +1,9 @@
 class Pedals extends jsButton {
   constructor(pianoKeys) {
+    super(null, null, false);
     this._setType();
     this.parentNode = this._getParentNode();
-    super({
+    this.init({
       'class': 'pedals',
       'id': this.type
     }, this.parentNode);
