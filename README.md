@@ -2,6 +2,6 @@
 
 a html5 piano app created for the web prioritizing simplicty and ease of use
 
-[ ] fix audio note scaling
-[ ] fix other two pedals
-[ ] add eventlisteners for instrument and layout
+- [ ] fix audio note scaling
+- [ ] fix other two pedals
+- [ ] add eventlisteners for instrument and layout
