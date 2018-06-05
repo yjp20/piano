@@ -1,12 +1,7 @@
-# <img src='http://dev.siscoding.club/siscodingclub/piano/raw/master/logo.png' height='100' width='77'>  piano 
+# <img src='https://github.com/siscodingclub/piano/raw/master/logo.png' height='100' width='77'>  piano 
 
 a html5 piano app created for the web prioritizing simplicty and ease of use
 
-
-## How to install:
-1. `npm install`
-2. copy `config_example.json` to config.json
-3. edit config.json with correct values
-
-## Run:
-`npm start`
+- [ ] fix audio note scaling
+- [ ] fix other two pedals
+- [ ] add eventlisteners for instrument and layout
