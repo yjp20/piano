@@ -3,17 +3,6 @@
   <head>
     <link rel="stylesheet" type="text/css" href="css/range.css">
     <link rel="stylesheet" type="text/css" href="css/game.css">
-    <script src='js/wrappers/WebAudioClient.Client.js'></script>
-    <script src='js/data/keymapping.js'></script>
-    <script src='js/data/instruments.js'></script>
-    <script src='js/models/PianoKeyboard.js'></script>
-    <script src='js/models/NotesListing.js'></script>
-    <script src='js/models/jsButton.js'></script>
-    <script src='js/models/Pedals.js'></script>
-    <script src='js/models/PianoKeys.js'></script>
-    <script src='js/models/SoftPedal.js'></script>
-    <script src='js/models/SostenutoPedal.js'></script>
-    <script src='js/models/SustainPedal.js'></script>
   </head>
   <body>
     <div id="keyboard">
@@ -28,19 +17,16 @@
           <option>violin</option>
           <option>xylophone</option>
         </select>
+      </div>
+      <div id="pedal-container"></div>
+      <div id="other-right">
         <select id="keymap">
           <option selected> functional </option>
           <option> basic </option>
           <option> compact </option>
         </select>
       </div>
-      <div id="pedal-container"></div>
-      <div id="other-right">
-      </div>
     </div>
-    <script>
-      var keyboard = new PianoKeyboard(document.getElementById('keyboard'));
-    </script>
+    <script src="js/piano.bundle.js"></script>
   </body>
-
 </html>

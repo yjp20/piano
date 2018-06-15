@@ -1,58 +1,58 @@
-class jsButton {
-  constructor(attributes, parentNode, activate=true) {
+export default class jsButton {
+  constructor(attributes, parentNode, activate = true) {
     if (activate) this.init(attributes, parentNode);
   }
-  
+
   init(attributes, parentNode) {
     this.parentNode = parentNode;
-    this.DOMelement = this._createDOMelement();
+    this._createDOMelement();
     this.setDOMAttributes(attributes);
     this._modifyDOMElement();
     // multiple inputs, mouse, keyboard
     this.keyboardIsDown = false;
     this.mouseIsDown = false;
   }
-  
+
   _createDOMelement() {
-    return document.createElement('div');
+    this.DOMelement = document.createElement('div');
   }
   _modifyDOMElement() {
     this._addMouseListener();
     this._appendDOMElement();
   }
   setDOMAttributes(attributes) {
-    for (let attribute in attributes) {
+    Object.keys(attributes).forEach((attribute) => {
       this.DOMelement.setAttribute(attribute, attributes[attribute]);
-    }
+    });
   }
   _appendDOMElement() {
     this.parentNode.appendChild(this.DOMelement);
   }
-  
+
   setText(string) {
     this.DOMelement.innerHTML = string;
   }
 
 
   _addMouseListener() {
-    this.DOMelement.addEventListener('mousedown', function () {
+    this.DOMelement.addEventListener('mousedown', () => {
       this._mouseDown();
-    }.bind(this))
-    this.DOMelement.addEventListener('mouseup', function () {
+    });
+    this.DOMelement.addEventListener('mouseup', () => {
       this._mouseUp();
-    }.bind(this))
-    this.DOMelement.addEventListener('mouseenter', function (event) {
+    });
+    this.DOMelement.addEventListener('mouseenter', (event) => {
       const CLICKED = 1;
-      if (event.buttons == CLICKED) {
+      if (event.buttons === CLICKED) {
         this._mouseDown();
       }
-    }.bind(this))
-    this.DOMelement.addEventListener('mouseleave', function (event) {
+    });
+    this.DOMelement.addEventListener('mouseleave', (event) => {
       const CLICKED = 1;
-      if (event.buttons == CLICKED) {
+      if (event.buttons === CLICKED) {
         this._mouseUp();
       }
-    }.bind(this))
+    });
   }
   _mouseDown() {
     this.mouseIsDown = true;
@@ -77,10 +77,7 @@ class jsButton {
     return this.keyboardIsDown || this.mouseIsDown;
   }
   _update() {
-    if (this.isStateOn()) 
-      this.activate();
-    else
-      this.deactivate();
+    if (this.isStateOn()) { this.activate(); } else { this.deactivate(); }
   }
   activate() {
     this.DOMelement.setAttribute('pressed', '');

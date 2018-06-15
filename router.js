@@ -1,7 +1,12 @@
+const debug = require('debug')('app:piano');
 const express = require('express');
-const router = express.Router();
+const path = require('path');
 
-router.use(express.static(__dirname + '/public'));
+const app = express();
 
-module.exports = router;
+debug('initializing');
+
+app.use(express.static(path.join(__dirname, '/public')));
+
+module.exports = app;
 

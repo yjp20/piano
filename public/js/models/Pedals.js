@@ -1,15 +1,14 @@
-class Pedals extends jsButton {
+import jsButton from './jsButton';
+
+export default class Pedals extends jsButton {
   constructor(pianoKeys) {
     super(null, null, false);
     this._setType();
-    this.parentNode = this._getParentNode();
+    this.parentNode = document.getElementById('pedal-container');
     this.init({
-      'class': 'pedals',
-      'id': this.type
+      class: 'pedals',
+      id: this.type,
     }, this.parentNode);
     this.pianoKeys = pianoKeys;
-  }
-  _getParentNode() {
-    return document.getElementById('pedal-container');
   }
 }

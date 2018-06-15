@@ -1,5 +1,45 @@
-var keymapping = {
-  basic : {
+const specialCases = {
+  37: '&larr;',
+  39: '&rarr;',
+  40: '&darr;',
+  219: '&#91',
+  221: '&#93',
+  189: '&#45',
+  187: '&#61',
+  220: '&#92',
+  192: '&#126',
+  112: 'F1',
+  113: 'F2',
+  114: 'F3',
+  115: 'F4',
+  116: 'F5',
+  117: 'F6',
+  118: 'F7',
+  119: 'F8',
+  120: 'F9',
+  121: 'F10',
+  122: 'F11',
+  123: 'F12',
+  8: '&#9003;',
+  9: '&#8633;',
+  20: '&#8682;',
+  186: '&#59',
+  222: '&#8216',
+  13: '&#8626',
+  16: '&#8679',
+  188: '&#44',
+  190: '&#46',
+  191: '&#47',
+  17: '&#8963;',
+  91: '&#9638',
+  18: '&#8997;',
+  32: '&#9251;',
+  93: 'SEL',
+  38: '&uarr;',
+};
+
+const keymapping = {
+  basic: {
     112: 'C2',
     113: 'C#2',
     114: 'D2',
@@ -11,7 +51,7 @@ var keymapping = {
     120: 'G#2',
     121: 'A2',
     122: 'A#2',
-    123: 'B2',  //octave 2 is keys F1 => F12
+    123: 'B2', // octave 2 is keys F1 => F12
     49: 'C3',
     50: 'C#3',
     51: 'D3',
@@ -62,14 +102,14 @@ var keymapping = {
     188: 'G#6',
     190: 'A6',
     191: 'A#6',
-    38: 'B6',// octave 6 is keys LSHIFT => UPARROW
-             // octave 7 is omitted due to unprettyness
+    38: 'B6', // octave 6 is keys LSHIFT => UPARROW
+    // octave 7 is omitted due to unprettyness
     37: 'pedal_1',
     40: 'pedal_2',
-    39: 'pedal_3'
+    39: 'pedal_3',
   },
 
-  compact : {
+  compact: {
     112: 'C2',
     113: 'C#2',
     114: 'D2',
@@ -81,7 +121,7 @@ var keymapping = {
     120: 'G#2',
     121: 'A2',
     122: 'A#2',
-    123: 'B2',  //octave 2 is keys F1 => F12
+    123: 'B2', // octave 2 is keys F1 => F12
     192: 'C3',
     49: 'C#3',
     50: 'D3',
@@ -140,13 +180,13 @@ var keymapping = {
     32: 'G7',
     93: 'G#7',
     38: 'A7',
-  // L ARROW, D ARROW, R ARROW ARE PEDALS
+    // L ARROW, D ARROW, R ARROW ARE PEDALS
     37: 'pedal_1',
     40: 'pedal_2',
-    39: 'pedal_3'
+    39: 'pedal_3',
   },
 
-  functional : {
+  functional: {
     9: 'C3',
     49: 'C#3',
     81: 'D3',
@@ -172,7 +212,7 @@ var keymapping = {
     187: 'G#4',
     221: 'A4',
     8: 'A#4',
-    220: 'B4',// octave 4 is keys Q => ]
+    220: 'B4', // octave 4 is keys Q => ]
     16: 'C5',
     65: 'C#5',
     90: 'D5',
@@ -184,8 +224,8 @@ var keymapping = {
     71: 'G#5',
     66: 'A5',
     72: 'A#5',
-    78: 'B5', //octave 5 is keys Shift to N
-    77: 'C6', //octave 6 is keys M to rest
+    78: 'B5', // octave 5 is keys Shift to N
+    77: 'C6', // octave 6 is keys M to rest
     75: 'C#6',
     188: 'D6',
     76: 'D#6',
@@ -194,53 +234,14 @@ var keymapping = {
     222: 'F#6',
     37: 'pedal_1',
     40: 'pedal_2',
-    39: 'pedal_3'
-  }
-}
+    39: 'pedal_3',
+  },
+  keyCodeToText(keyCode) {
+    let value = specialCases[keyCode];
+    if (value === undefined) { value = String.fromCharCode(keyCode); }
+    return value;
+  },
+};
 
-function keyCodeToText(keyCode) {
-  let value = specialCases[keyCode];
-  if (value == undefined)
-    value = String.fromCharCode(keyCode);
-  return value;
-}
 
-var specialCases = {
-  37: '&larr;',
-  39: '&rarr;',
-  40: '&darr;',
-  219: '&#91',
-  221: '&#93',
-  189: '&#45',
-  187: '&#61',
-  220: '&#92',
-  192: '&#126',
-  112: 'F1',
-  113: 'F2',
-  114: 'F3',
-  115: 'F4',
-  116: 'F5',
-  117: 'F6',
-  118: 'F7',
-  119: 'F8',
-  120: 'F9',
-  121: 'F10',
-  122: 'F11',
-  123: 'F12',
-  8: '&#9003;',
-  9: '&#8633;',
-  20: '&#8682;',
-  186: '&#59',
-  222: '&#8216',
-  13: '&#8626',
-  16: '&#8679',
-  188: '&#44',
-  190: '&#46',
-  191: '&#47',
-  17: '&#8963;',
-  91: '&#9638',
-  18: '&#8997;',
-  32: '&#9251;',
-  93: 'SEL',
-  38: '&uarr;'
-}
+export default keymapping;
