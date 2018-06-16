@@ -1,9 +1,8 @@
-image: ubuntu:16.04
+image: node:alpine
 
 build site:
   stage: build
   script:
-    - apt update -y && apt install openssh-client nodejs npm
     - npm install --progress=false
     - npm run build
 
@@ -13,7 +12,7 @@ deploy_stage:
   only:
     - master
   script:
-    - apt update -y && apt install openssh-client nodejs npm
+    - apk add rsync
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
     - mkdir "${HOME}/.ssh"
@@ -26,7 +25,7 @@ deploy_live:
   only:
     - master
   script:
-    - apt update -y && apt install openssh-client nodejs npm
+    - apk add rsync
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
     - mkdir "${HOME}/.ssh"
