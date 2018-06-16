@@ -1,0 +1,19 @@
+
+deploy_stage:
+  stage: deploy
+  environment: Staging
+  only:
+    - master
+  script:
+    - npm install
+    - git push prod@siscoding.club:~/dev/projects/piano
+
+deploy_live:
+  stage: deploy
+  environment: Live
+  only:
+    - master
+  script:
+    - npm install
+    - git push prod@siscoding.club:~/app/projects/piano
+
