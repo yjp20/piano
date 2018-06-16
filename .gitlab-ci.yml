@@ -1,19 +1,30 @@
+build site:
+  stage: build
+  script:
+    - npm install --progress=false
+    - npm run build
 
 deploy_stage:
   stage: deploy
-  environment: Staging
+  environment: staging
   only:
     - master
   script:
-    - npm install
-    - git push prod@siscoding.club:~/dev/projects/piano
+    - echo "${SSH_PRIVATE_KEY}" > id_rsa
+    - chmod 700 id_rsa
+    - mkdir "${HOME}/.ssh"
+    - echo "${SSH_HOST_KEY}" > "${HOME}/.ssh/known_hosts"
+    - rsync -hrvz --delete --exclude=_ -e 'ssh -i id_rsa' / prod@siscoding.club:~/prod/dev/projects/piano/
 
 deploy_live:
   stage: deploy
-  environment: Live
+  environment: production
   only:
     - master
   script:
-    - npm install
-    - git push prod@siscoding.club:~/app/projects/piano
+    - echo "${SSH_PRIVATE_KEY}" > id_rsa
+    - chmod 700 id_rsa
+    - mkdir "${HOME}/.ssh"
+    - echo "${SSH_HOST_KEY}" > "${HOME}/.ssh/known_hosts"
+    - rsync -hrvz --delete --exclude=_ -e 'ssh -i id_rsa' / prod@siscoding.club:~/prod/app/projects/piano/
 
