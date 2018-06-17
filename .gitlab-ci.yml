@@ -22,6 +22,7 @@ deploy_stage:
   only:
     - staging
   script:
+    - npm run build
     - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' . prod@siscoding.club:~/dev/projects/piano/
 
 deploy_live:
@@ -29,5 +30,6 @@ deploy_live:
   only:
     - master
   script:
+    - npm run build
     - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa' . prod@siscoding.club:~/app/projects/piano/
 
