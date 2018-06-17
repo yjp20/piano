@@ -16,9 +16,7 @@ deploy_stage:
     - apk add rsync openssh
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
-    - mkdir "${HOME}/.ssh"
-    - echo "Host *\n  StrictHostKeyChecking no" > "${HOME}/.ssh/config"
-    - rsync -hrvz --delete --exclude=_ -e 'ssh -i id_rsa' / prod@siscoding.club:~/prod/dev/projects/piano/
+    - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa' / prod@siscoding.club:~/prod/dev/projects/piano/
 
 deploy_live:
   stage: deploy
@@ -30,7 +28,5 @@ deploy_live:
     - apk add rsync openssh
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
-    - mkdir "${HOME}/.ssh"
-    - echo "Host *\n  StrictHostKeyChecking no" > "${HOME}/.ssh/config"
-    - rsync -hrvz --delete --exclude=_ -e 'ssh -i id_rsa' / prod@siscoding.club:~/prod/app/projects/piano/
+    - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa' / prod@siscoding.club:~/prod/app/projects/piano/
 
