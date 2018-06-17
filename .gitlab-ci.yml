@@ -15,7 +15,7 @@ deploy_stage:
     - apk update
     - apk add rsync openssh
     - echo $SSH_PRIVATE_KEY > id_rsa
-    - echo $SSH_PRIVATE_KEY | cut -c1-5
+    - echo $SSH_PRIVATE_KEY | cut -c1-20
     - chmod 700 id_rsa
     - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa' / prod@siscoding.club:~/prod/dev/projects/piano/
 
