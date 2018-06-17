@@ -6,28 +6,24 @@ build site:
     - npm install --progress=false
     - npm run build
 
+before_script:
+  - apk update
+  - which ssh-agent || apk add openssh
+  - which rsync || apk add rsync
+  - eval $(ssh-agent -s)
+  - ssh-add < (echo "$SSH_PRIVATE_KEY")
+
 deploy_stage:
   stage: deploy
-  environment: staging
   only:
     - staging
   script:
-    - apk update
-    - apk add rsync openssh
-    - echo $SSH_PRIVATE_KEY > id_rsa
-    - echo $SSH_PRIVATE_KEY | cut -c1-40
-    - chmod 700 id_rsa
-    - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa' / prod@siscoding.club:~/prod/dev/projects/piano/
+    - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' / prod@siscoding.club:~/prod/dev/projects/piano/
 
 deploy_live:
   stage: deploy
-  environment: production
   only:
     - master
   script:
-    - apk update
-    - apk add rsync openssh
-    - echo "${SSH_PRIVATE_KEY}" > id_rsa
-    - chmod 700 id_rsa
     - rsync -hrvz --delete --exclude=_ -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa' / prod@siscoding.club:~/prod/app/projects/piano/
 
