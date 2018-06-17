@@ -11,7 +11,7 @@ before_script:
   - which ssh-agent || apk add openssh
   - which rsync || apk add rsync
   - eval $(ssh-agent -s)
-  - ssh-add < echo "$SSH_PRIVATE_KEY"
+  - echo "$SSH_PRIVATE_KEY" | ssh-add -
 
 deploy_stage:
   stage: deploy
