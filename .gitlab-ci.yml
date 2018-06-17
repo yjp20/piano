@@ -17,7 +17,7 @@ deploy_stage:
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
     - mkdir "${HOME}/.ssh"
-    - echo "${SSH_HOST_KEY}" > "${HOME}/.ssh/known_hosts"
+    - echo "Host *\n  StrictHostKeyChecking no" > "${HOME}/.ssh/config"
     - rsync -hrvz --delete --exclude=_ -e 'ssh -i id_rsa' / prod@siscoding.club:~/prod/dev/projects/piano/
 
 deploy_live:
@@ -31,6 +31,6 @@ deploy_live:
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
     - mkdir "${HOME}/.ssh"
-    - echo "${SSH_HOST_KEY}" > "${HOME}/.ssh/known_hosts"
+    - echo "Host *\n  StrictHostKeyChecking no" > "${HOME}/.ssh/config"
     - rsync -hrvz --delete --exclude=_ -e 'ssh -i id_rsa' / prod@siscoding.club:~/prod/app/projects/piano/
 
