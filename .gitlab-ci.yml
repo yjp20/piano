@@ -10,9 +10,10 @@ deploy_stage:
   stage: deploy
   environment: staging
   only:
-    - master
+    - staging
   script:
-    - apk add rsync
+    - apk update
+    - apk add rsync openssh
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
     - mkdir "${HOME}/.ssh"
@@ -25,7 +26,8 @@ deploy_live:
   only:
     - master
   script:
-    - apk add rsync
+    - apk update
+    - apk add rsync openssh
     - echo "${SSH_PRIVATE_KEY}" > id_rsa
     - chmod 700 id_rsa
     - mkdir "${HOME}/.ssh"
