@@ -4,6 +4,6 @@ const config = require('./config');
 
 const app = express();
 
-app.use(require('./router.js'));
+app.use(config.prefix, require('./router.js'));
 
 app.listen(config.port);
