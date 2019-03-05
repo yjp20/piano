@@ -27,5 +27,10 @@
     "express": "^4.16.3",
     "webpack": "^4.12.0",
     "webpack-cli": "^3.0.8"
+  },
+  "dependencies": {
+    "compression-webpack-plugin": "^2.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "i": "^0.3.6"
   }
 }
