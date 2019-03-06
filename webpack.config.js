@@ -1,5 +1,4 @@
 const path = require('path');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -24,8 +23,5 @@ module.exports = {
     filename: 'piano.bundle.js',
     path: path.join(__dirname, 'public/js'),
   },
-  plugins: [
-    new CompressionPlugin()
-  ],
 };
 
